@@ -24,7 +24,7 @@ const StyledDropDownUl = styled.ul`
   }
 `
 
-function InputDropDownMenu() {
+function InputDropDownMenu({ onSelected }) {
   const debounceSetState = useMemo(() => {
     return _.debounce((inputValue, setFunc) => {
       setFunc(inputValue);
@@ -55,19 +55,13 @@ function InputDropDownMenu() {
   // 查詢城市 - End
 
   // 查詢城市天氣 - Start
-  const [weatherData, setWeatherData] = useState({})
   const [citySelected, setCitySelected] = useState({})
   const onCityBeSelected = (item) => {
-    const fetchWeatherData = () => {
-      getWeatherByCoordinates(item).then((response) => {
-        setWeatherData(response.data)
-      })
-    }
     setCitySelected(item)
     setCityNameInput(item.name)
     setCityList([])
     setNeedToFetch(false)
-    fetchWeatherData()
+    onSelected(item)
   }
   // 查詢城市天氣 - End
 
@@ -94,13 +88,17 @@ function InputDropDownMenu() {
         </StyledDropDownUl>
       )}
       <h1>查詢城市：{citySelected.name}</h1>
-      <h2>{weatherData.timezone}</h2>
     </div>
   )
 }
 
 function App() {
   const [weatherData, setWeatherData] = useState({})
+  const fetchWeatherData = (item) => {
+    getWeatherByCoordinates(item).then((response) => {
+      setWeatherData(response.data)
+    })
+  }
 
   return (
     <div className="App">
@@ -109,7 +107,8 @@ function App() {
           天氣預報
         </p>
       </header>
-      <InputDropDownMenu />
+      <InputDropDownMenu onSelected={fetchWeatherData} />
+      <h2>{weatherData.timezone}</h2>
     </div>
   );
 }
