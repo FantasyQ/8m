@@ -15,7 +15,7 @@ const getWeatherByCoordinates = ({
   lat = 25.0375198,
   lon = 121.5636796
 }) => {
-  return axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}`)
+  return axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
 }
 
 export {
