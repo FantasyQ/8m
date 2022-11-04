@@ -82,6 +82,9 @@ function InputDropDownMenu({ onSelected }) {
     if (needToFetch && cityNameToFetch !== '') {
       fetchCityList();
     }
+    if (cityNameToFetch === '') {
+      setCityList([])
+    }
   }, [needToFetch, cityNameToFetch]);
   // 查詢城市 - End
 
