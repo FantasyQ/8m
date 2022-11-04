@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { getCityList, getWeatherByCoordinates } from './api/openWeather';
+import Loading from './component/Loading';
 import WeatherChart from './component/WeatherChart';
 
 const StyledWrapper = styled.div`
@@ -15,6 +16,9 @@ const StyledWrapper = styled.div`
     margin: 0 0 50px 0;
   }
 `
+const StyledLoadingBox = styled.div`
+  width: 100%;
+`
 
 const StyledInputDropDownMenuWrap = styled.div`
   display: inline-block;
@@ -25,6 +29,7 @@ const StyledQueryCityName = styled.h2`
   font-size: 40px;
   line-height: 40px;
   margin-top: 60px;
+  margin-bottom: 25px;
 `
 const StyledInputText = styled.input`
   width: 400px;
@@ -129,13 +134,16 @@ function InputDropDownMenu({ onSelected }) {
 
 function App() {
   const [weatherData, setWeatherData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const fetchWeatherData = (item) => {
+    setIsLoading(true)
+    setWeatherData({})
     getWeatherByCoordinates(item).then((response) => {
-      console.log(response.data);
       setWeatherData({
         ...response.data,
         daily: response.data.daily.slice(0, 4),
       });
+      setIsLoading(false)
     });
   };
 
@@ -147,6 +155,9 @@ function App() {
         </h1>
       </header>
       <InputDropDownMenu onSelected={fetchWeatherData} />
+      {isLoading && (
+        <StyledLoadingBox><Loading /></StyledLoadingBox>
+      )}
       {Object.keys(weatherData).length !== 0 && (
         <WeatherChart weatherData={weatherData} />
       )}
