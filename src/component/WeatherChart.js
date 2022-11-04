@@ -22,7 +22,17 @@ const StyledHint = styled.div`
   color: #fff;
 `
 const StyledHintContent = styled.div`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+`
+const StyledHintLeftBox = styled.div`
+  margin-right: 40px;
+`
+const StyledHintRightBox = styled.div`
+  p {
+    display: inline-block;
+    margin-left: 10px;
+  }
 `
 const StyledTempHint = styled.div`
   height: 30px;
@@ -45,7 +55,7 @@ const StyledTempHint = styled.div`
   }
 `
 const StyledChartColumn = styled.div`
-  padding: 0 20px;
+  padding: 0 30px;
   position: relative;
   display: flex;
   align-items: flex-end;
@@ -55,7 +65,7 @@ const StyledTempBar = styled.div`
   min-height: 5px;
   height: ${(props) => `${Math.abs(props.barHeight) * 0.7}%`};
   background-color: ${props => props.bgColor};
-  margin: 0 10px;
+  margin: 0 5px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -86,6 +96,11 @@ const StyledPieChart = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 10px;
+`
+const StyledPieChartHint = styled(StyledPieChart)`
+  width: 70px;
+  height: 70px;
+  font-size: 14px;
 `
 
 const StyledHasNegChartContent = styled.div`
@@ -136,9 +151,17 @@ function WeatherChart({ weatherData }) {
     <>
       <StyledHint>
         <StyledHintContent>
-          <p>Unit of temperature: Celsius</p>
-          <StyledTempHint bgColor={colorSet.min}><span>Minimum Temperature</span></StyledTempHint>
-          <StyledTempHint bgColor={colorSet.max}><span>Maximum Temperature</span></StyledTempHint>
+          <StyledHintLeftBox>
+            <p>Unit of temperature: Celsius</p>
+            <StyledTempHint bgColor={colorSet.min}><span>Minimum Temperature</span></StyledTempHint>
+            <StyledTempHint bgColor={colorSet.max}><span>Maximum Temperature</span></StyledTempHint>
+          </StyledHintLeftBox>
+          <StyledHintRightBox>
+            <StyledPieChartHint humidity={63}><span>63%</span></StyledPieChartHint>
+            <p>
+              Humidity
+            </p>
+          </StyledHintRightBox>
         </StyledHintContent>
       </StyledHint>
       {hasNegativeTemp && (
